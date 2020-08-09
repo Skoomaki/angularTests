@@ -1,35 +1,45 @@
+const { by, browser } = require("protractor");
+
 const indexPageCheck = function() {
+    // define locators on page
     this.locators = {
-      serverURLInput: by.id('server-input-url'),
-      getButton: by.id('get-button'),
-      serverResponseMessage: by.css('#response-0'),
-      incorrectServerResponseMessage: by.css('#response-0')
+      nameField: by.model('yourName'),
+      learnAngularCheckBox: by.model('todo.done')
     };
+    // enter data into fields
     this.enterAndSelectElements = {
-      enterServerAddress: async address => {
-        await browser.findElement(this.locators.serverURLInput).sendKeys(address);
+      enterName: async name => {
+        await browser.findElement(this.locators.nameField).sendKeys(name);
       },
       getURL: async url => await browser.get(url),
-      clickGetButton: async () => {
-        await browser.findElement(this.locators.getButton).click();
+      clickLearnAngularJSCheckbox: async clickBox => {
+        await (await browser.findElement(this.locators.learnAngularCheckBox)).click(clickBox);
       }
     };
-    this.checkServerResponse = {
-      waitForElement: async () =>
-        await browser.wait(
-          browser.ExpectedConditions.presenceOf($('#response-0')),
-          5000,
-          'Element #response-0 taking too long to appear in the DOM'
-        ),
-      checkResponseFromServer: async () => {
-        return browser.findElement(this.locators.serverResponseMessage).getText();
-      },
-      checkErrorResponseFromServer: async () => {
-        return browser
-          .findElement(this.locators.incorrectServerResponseMessage)
-          .getText();
+    // verify elements by class
+    this.verifyToDo = {
+      checkIfAngularLearnedIsTrue: async checkIfTrue => {
+        await browser.findElement(this.locators.learnAngularCheckBox)
       }
-    };
+    }
+
+
+    // this.checkServerResponse = {
+    //   waitForElement: async () =>
+    //     await browser.wait(
+    //       browser.ExpectedConditions.presenceOf($('#response-0')),
+    //       5000,
+    //       'Element #response-0 taking too long to appear in the DOM'
+    //     ),
+    //   checkResponseFromServer: async () => {
+    //     return browser.findElement(this.locators.serverResponseMessage).getText();
+    //   },
+    //   checkErrorResponseFromServer: async () => {
+    //     return browser
+    //       .findElement(this.locators.incorrectServerResponseMessage)
+    //       .getText();
+    //   }
+    // };
   };
   
   module.exports = indexPageCheck;
